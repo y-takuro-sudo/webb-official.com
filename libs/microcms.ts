@@ -34,10 +34,15 @@ export interface ProjectsResponse {
 
 // Check if CMS is configured
 const isCMSConfigured = (): boolean => {
-  return !!(
-    process.env.MICROCMS_SERVICE_DOMAIN &&
-    process.env.MICROCMS_API_KEY
-  )
+  const domain = process.env.MICROCMS_SERVICE_DOMAIN
+  const apiKey = process.env.MICROCMS_API_KEY
+
+  // Debug logging for build time
+  console.log('[MicroCMS] Environment check:')
+  console.log(`  - MICROCMS_SERVICE_DOMAIN: ${domain ? `"${domain}"` : 'NOT SET'}`)
+  console.log(`  - MICROCMS_API_KEY: ${apiKey ? `"${apiKey.substring(0, 8)}..."` : 'NOT SET'}`)
+
+  return !!(domain && apiKey)
 }
 
 // Lazy client initialization
