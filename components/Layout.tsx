@@ -1,22 +1,58 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { useViewStore } from '@/store/useViewStore'
+import { useViewStore, VALID_TABS } from '@/store/useViewStore'
 import { Project } from '@/libs/microcms'
+import { TabType } from '@/types'
 import gsap from 'gsap'
 import LandingView from './views/LandingView'
 import GridView from './views/GridView'
 import AboutView from './views/AboutView'
 import MenuOverlay from './MenuOverlay'
+import ProjectDetailModal from './ProjectDetailModal'
 
 interface LayoutProps {
   projects: Project[]
 }
 
 export default function Layout({ projects }: LayoutProps) {
-  const { activeTab, theme, isMenuOpen, toggleMenu, isTransitioning } = useViewStore()
+  const { activeTab, theme, isMenuOpen, toggleMenu, isTransitioning, setActiveTab, setActiveTabDirect } = useViewStore()
   const viewContainerRef = useRef<HTMLDivElement>(null)
   const isDark = theme === 'DARK'
+  const isInitialized = useRef(false)
+
+  // Initialize from URL on mount
+  useEffect(() => {
+    if (isInitialized.current) return
+    isInitialized.current = true
+
+    const params = new URLSearchParams(window.location.search)
+    const viewParam = params.get('view') as TabType | null
+
+    if (viewParam && VALID_TABS.includes(viewParam)) {
+      setActiveTabDirect(viewParam)
+      // Replace current history state with tab info
+      window.history.replaceState({ tab: viewParam }, '', `/?view=${viewParam}`)
+    } else {
+      // Set initial state for landing
+      window.history.replaceState({ tab: 'LANDING' }, '', '/')
+    }
+  }, [setActiveTabDirect])
+
+  // Listen for browser back/forward
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      const tab = event.state?.tab as TabType | undefined
+      if (tab && VALID_TABS.includes(tab)) {
+        setActiveTabDirect(tab)
+      } else {
+        setActiveTabDirect('LANDING')
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [setActiveTabDirect])
 
   // View transition animation
   useEffect(() => {
@@ -56,12 +92,16 @@ export default function Layout({ projects }: LayoutProps) {
       />
 
       {/* Logo - Top Left */}
-      <div className="fixed top-8 left-8 z-[200] mix-blend-difference">
+      <button
+        onClick={() => setActiveTab('LANDING')}
+        className="fixed top-8 left-8 z-[200] mix-blend-difference cursor-pointer"
+        aria-label="Go to top"
+      >
         <h1 className="text-lg md:text-xl tracking-[0.3em] font-light text-white">
           WEBB
           <span className="text-xs ml-1 opacity-60">Inc.</span>
         </h1>
-      </div>
+      </button>
 
       {/* Menu Trigger - Top Right */}
       <button
@@ -100,6 +140,9 @@ export default function Layout({ projects }: LayoutProps) {
 
       {/* Menu Overlay */}
       <MenuOverlay />
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal />
     </div>
   )
 }

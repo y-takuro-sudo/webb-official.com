@@ -3,6 +3,49 @@
 import { useEffect, useRef } from 'react'
 import Lenis from '@studio-freight/lenis'
 import gsap from 'gsap'
+import { Instagram } from 'lucide-react'
+
+// Team members data
+const TEAM_MEMBERS = [
+  {
+    name: '吉岡 一靖',
+    nameEn: 'Yoshioka Issei',
+    title: 'CEO / Director',
+    instagram: '@1say1say1say',
+    url: 'https://www.instagram.com/1say1say1say/',
+  },
+  {
+    name: '木村 響',
+    nameEn: 'Kimura Kyo',
+    title: 'CTO / Technical Director',
+    instagram: '@kyoch0919',
+    url: 'https://www.instagram.com/kyoch0919/',
+  },
+  {
+    name: '矢崎 麦',
+    nameEn: 'Yazaki Baku',
+    title: 'COO / Producer',
+    instagram: '@baku_yazaki',
+    url: 'https://www.instagram.com/baku_yazaki/',
+  },
+]
+
+// Corporate Overview data
+const CORPORATE_INFO = [
+  { label: '会社名', value: '株式会社WEBB（ウェッブ）' },
+  { label: '法人番号', value: '1011301030758' },
+  { label: '資本金', value: '1,000,000円' },
+  { label: '代表取締役', value: '吉岡 一靖 (Yoshioka Issei)' },
+  {
+    label: '所在地',
+    value: '〒164-0012\n東京都中野区本町2-46-1\n中野サンブライトツイン 14階 TCIC内 No.1',
+  },
+  {
+    label: 'CONTACT',
+    value: 'MAIL: info@webb-official.com\nTEL: 050-1792-5114',
+    isContact: true,
+  },
+]
 
 export default function AboutView() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -67,107 +110,86 @@ export default function AboutView() {
             data-animate
             className="text-6xl md:text-8xl font-light tracking-tight mb-16 text-black"
           >
-            ABOUT
+            ABOUT US
           </h1>
 
-          <div className="grid md:grid-cols-2 gap-16 md:gap-24">
-            <div>
-              <h2
-                data-animate
-                className="text-sm tracking-widest mb-6 text-black/40"
-              >
-                COMPANY
-              </h2>
-              <p data-animate className="text-lg md:text-xl leading-relaxed text-black">
-                WEBB Inc. is a creative production company founded in Tokyo.
-              </p>
-              <p
-                data-animate
-                className="text-lg md:text-xl leading-relaxed mt-4 text-black/70"
-              >
-                We specialize in creating visual content that resonates—film,
-                photography, and design that captures the essence of brands and
-                stories.
-              </p>
+          {/* Team Section */}
+          <section className="mb-24 md:mb-32">
+            <h2
+              data-animate
+              className="text-sm tracking-widest mb-10 text-black/40"
+            >
+              TEAM
+            </h2>
+            <div className="grid md:grid-cols-3 gap-10 md:gap-12">
+              {TEAM_MEMBERS.map((member) => (
+                <div key={member.instagram} data-animate>
+                  <h3 className="text-xl md:text-2xl font-light mb-1 text-black">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm text-black/50 mb-2">{member.nameEn}</p>
+                  <p className="text-sm text-black/70 mb-4">{member.title}</p>
+                  <a
+                    href={member.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-black/40 hover:text-black transition-colors"
+                  >
+                    <Instagram size={16} />
+                    <span>{member.instagram}</span>
+                  </a>
+                </div>
+              ))}
             </div>
+          </section>
 
-            <div>
-              <h2
-                data-animate
-                className="text-sm tracking-widest mb-6 text-black/40"
-              >
-                PHILOSOPHY
-              </h2>
-              <p data-animate className="text-lg md:text-xl leading-relaxed text-black">
-                Contrast creates meaning. Minimalism reveals truth.
-              </p>
-              <p
-                data-animate
-                className="text-lg md:text-xl leading-relaxed mt-4 text-black/70"
-              >
-                We believe in the power of restraint—in letting the work breathe,
-                in finding beauty in negative space.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-24 md:mt-32 grid md:grid-cols-2 gap-16 md:gap-24">
-            <div>
-              <h2
-                data-animate
-                className="text-sm tracking-widest mb-6 text-black/40"
-              >
-                FOUNDER
-              </h2>
-              <h3
-                data-animate
-                className="text-2xl md:text-3xl font-light mb-4 text-black"
-              >
-                Kazuyasu Yoshioka
-              </h3>
-              <p data-animate className="leading-relaxed text-black/70">
-                Director / Cinematographer
-              </p>
-            </div>
-
-            <div>
-              <h2
-                data-animate
-                className="text-sm tracking-widest mb-6 text-black/40"
-              >
-                CONTACT
-              </h2>
-              <a
-                href="mailto:contact@webb-official.com"
-                data-animate
-                className="text-lg md:text-xl text-black hover:text-black/60 transition-colors"
-              >
-                contact@webb-official.com
-              </a>
-              <div data-animate className="mt-8 flex gap-8">
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm tracking-widest text-black/40 hover:text-black transition-colors"
+          {/* Corporate Overview Section */}
+          <section className="mb-24 md:mb-32">
+            <h2
+              data-animate
+              className="text-sm tracking-widest mb-10 text-black/40"
+            >
+              会社概要 / CORPORATE OVERVIEW
+            </h2>
+            <dl className="space-y-6">
+              {CORPORATE_INFO.map((item) => (
+                <div
+                  key={item.label}
+                  data-animate
+                  className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-2 md:gap-8 py-4 border-b border-black/10"
                 >
-                  INSTAGRAM
-                </a>
-                <a
-                  href="https://vimeo.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm tracking-widest text-black/40 hover:text-black transition-colors"
-                >
-                  VIMEO
-                </a>
-              </div>
-            </div>
-          </div>
+                  <dt className="text-sm tracking-wider text-black/50">
+                    {item.label}
+                  </dt>
+                  <dd className="text-base text-black whitespace-pre-line">
+                    {item.isContact ? (
+                      <div className="space-y-1">
+                        <a
+                          href="mailto:info@webb-official.com"
+                          className="block hover:text-black/60 transition-colors"
+                        >
+                          MAIL: info@webb-official.com
+                        </a>
+                        <a
+                          href="tel:050-1792-5114"
+                          className="block hover:text-black/60 transition-colors"
+                        >
+                          TEL: 050-1792-5114
+                        </a>
+                      </div>
+                    ) : (
+                      item.value
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
 
+          {/* Footer */}
           <div
             data-animate
-            className="mt-32 pt-8 border-t border-black/10"
+            className="pt-8 border-t border-black/10"
           >
             <p className="text-xs tracking-widest text-black/40">
               WEBB Inc. / Tokyo, Japan

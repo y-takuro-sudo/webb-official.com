@@ -68,9 +68,9 @@ export default function MenuOverlay() {
           <button
             key={item.id}
             onClick={() => handleItemClick(item.id)}
-            className={`text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-black transition-all duration-300 hover:italic ${
+            className={`text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-black transition-all duration-300 hover:scale-[1.02] ${
               activeTab === item.id
-                ? 'italic opacity-100'
+                ? 'opacity-100'
                 : 'opacity-40 hover:opacity-100'
             }`}
           >

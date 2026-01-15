@@ -5,7 +5,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { id: 'COMMERCIAL', label: 'COMMERCIAL' },
   { id: 'MV', label: 'MV' },
   { id: 'JAMES_WEBB', label: 'JAMES WEBB' },
-  { id: 'ABOUT', label: 'ABOUT' },
+  { id: 'ABOUT', label: 'ABOUT US' },
 ]
 
 // Map tab type to CMS category
